@@ -1,62 +1,118 @@
 "use client"
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { EventHeader } from "@/components/event-header";
+import { EventCard } from "@/components/event-card";
 
-type Event = {
+export type Activity = {
   id: string;
-  name: string;
-  date: string; // ISO string or formatted
+  title: string;
+  date: string; // ISO string
+  durationDays: number;
+  category: string;
+  priceGBP: number;
   interestedCount: number;
+  thumbnailUrl?: string;
+  tags?: string[];
 };
 
-const initialEvents: Event[] = [
-  { id: "1", name: "Green Tech Conference", date: "2025-09-01", interestedCount: 120 },
-  { id: "2", name: "Sustainability Hackathon", date: "2025-08-25", interestedCount: 85 },
-  { id: "3", name: "Eco Startup Meetup", date: "2025-09-10", interestedCount: 95 },
+const initialActivities: Activity[] = [
+  {
+    id: "1",
+    title: "Ping Pong",
+    date: "2025-02-12",
+    durationDays: 5,
+    category: "Rebound",
+    priceGBP: 250,
+    interestedCount: 120,
+    tags: ["Indoor", "Fun"],
+  },
+  {
+    id: "2",
+    title: "Zombie chase",
+    date: "2025-02-12",
+    durationDays: 5,
+    category: "Zombie",
+    priceGBP: 250,
+    interestedCount: 85,
+    tags: ["Outdoor", "Adventure"],
+  },
+  {
+    id: "3",
+    title: "Night Run",
+    date: "2025-03-01",
+    durationDays: 2,
+    category: "Fitness",
+    priceGBP: 180,
+    interestedCount: 95,
+    tags: ["Health", "Night"],
+  },
 ];
 
 export default function EventsPage() {
-  const [events, setEvents] = useState<Event[]>(() =>
-    [...initialEvents].sort((a, b) => b.interestedCount - a.interestedCount)
+  const [activities, setActivities] = useState<Activity[]>(() =>
+    [...initialActivities].sort((a, b) => b.interestedCount - a.interestedCount)
   );
 
-  const handleRegister = (id: string) => {
-    setEvents((prev) => {
+  const firstActivityDate = useMemo(() => activities[0]?.date, [activities]);
+
+  const handleAddActivity = useCallback(() => {
+    const nextId = (activities.length + 1).toString();
+    const newActivity: Activity = {
+      id: nextId,
+      title: `New Activity ${nextId}`,
+      date: new Date().toISOString(),
+      durationDays: 1,
+      category: "General",
+      priceGBP: 100,
+      interestedCount: 0,
+      tags: ["New"],
+    };
+    setActivities((prev) => [newActivity, ...prev]);
+  }, [activities.length]);
+
+  const handleViewLiveInfo = useCallback(() => {
+    alert("Live info coming soon");
+  }, []);
+
+  const onJoin = useCallback((id: string) => {
+    setActivities((prev) => {
       const updated = prev.map((e) =>
         e.id === id ? { ...e, interestedCount: e.interestedCount + 1 } : e
       );
       return updated.sort((a, b) => b.interestedCount - a.interestedCount);
     });
-  };
+  }, []);
 
   return (
-    <main className="min-h-screen bg-gray-900 text-gray-100 p-6">
-      <h1 className="text-4xl font-bold mb-8 text-center">Recent Events</h1>
+    <main className="min-h-screen bg-neutral-950 text-gray-100">
+      <div className="mx-auto max-w-2xl sm:max-w-4xl md:max-w-5xl p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <EventHeader
+          title="Big Weekender Event"
+          firstActivityDate={firstActivityDate}
+          onAddActivity={handleAddActivity}
+          onViewLiveInfo={handleViewLiveInfo}
+        />
 
-      <div className="max-w-3xl mx-auto space-y-6">
-        {events.map((event, index) => (
-          <div
-            key={event.id}
-            className="flex items-center justify-between bg-gray-800 p-5 rounded-lg shadow-md"
-          >
-            <div>
-              <div className="flex items-center space-x-3">
-                <span className="text-yellow-400 font-bold text-xl">{index + 1}.</span>
-                <h2 className="text-2xl font-semibold">{event.name}</h2>
-              </div>
-              <p className="text-gray-400">Date: {new Date(event.date).toLocaleDateString()}</p>
-              <p className="mt-1 text-green-400 font-medium">
-                {event.interestedCount} peoples intrested
-              </p>
-            </div>
-            <button
-              onClick={() => handleRegister(event.id)}
-              className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold px-4 py-2 rounded-md transition"
-            >
-              Register
-            </button>
-          </div>
-        ))}
+        <div className="space-y-4 sm:space-y-6">
+          {activities.map((a) => (
+            <EventCard
+              key={a.id}
+              id={a.id}
+              title={a.title}
+              date={a.date}
+              durationDays={a.durationDays}
+              category={a.category}
+              priceGBP={a.priceGBP}
+              thumbnailUrl={a.thumbnailUrl}
+              interestedCount={a.interestedCount}
+              tags={a.tags}
+              onJoin={onJoin}
+            />
+          ))}
+        </div>
       </div>
     </main>
   );
 }
+
+

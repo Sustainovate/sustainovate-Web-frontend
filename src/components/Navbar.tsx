@@ -6,9 +6,11 @@ export default function Navbar() {
         <h1 className="text-lg font-bold">My App</h1>
         <ul className="flex space-x-4">
           <li><a href="/">Home</a></li>
+          <li><a href="/dashbord">dashbord</a></li>
           <li><a href="/events">Events</a></li>
           <li><a href="/leaderboard">Leaderboard</a></li>
           <li><a href="/login">Login</a></li>
+          <li><a href="/signup">Signup</a></li>
         </ul>
       </div>
     </nav>

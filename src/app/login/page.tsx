@@ -1,43 +1,128 @@
-export default function Login() {
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import Link from "next/link"
+import { FaArrowLeft, FaCode, FaGithub, FaSpinner } from "react-icons/fa";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { motion } from "framer-motion"
+import SocialAuth from "@/components/SocialAuth"
+
+export default function LoginPage() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false)
+      window.location.href = "/dashboard"
+    }, 1500)
+  }
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-gray-950 to-gray-900">
-      <div className="border border-amber-400 rounded-2xl p-8 bg-gray-800 max-w-sm w-full flex flex-col gap-5 shadow-lg">
-        <h2 className="text-2xl font-bold text-amber-400 text-center">Login</h2>
-        
-        <input
-          type="text"
-          placeholder="Email"
-          className="border border-gray-600 rounded-md p-3 bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
-        />
-        
-        <input
-          type="password"
-          placeholder="Password"
-          className="border border-gray-600 rounded-md p-3 bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
-        />
-        
-        <button className="bg-amber-400 text-gray-900 rounded-md p-3 font-semibold hover:bg-amber-300 transition-colors">
-          Submit
-        </button>
+    <div className="flex min-h-screen bg-[#0A0A12] text-white">
+      {/* Left side - Form */}
+      <div className="flex w-full flex-col justify-center px-4 sm:px-6 lg:w-1/2 lg:px-8">
+        <div className="mx-auto w-full max-w-sm">
+          <div className="mb-10">
+            <Link href="/" className="flex items-center gap-2 text-[#A05CF5] hover:underline">
+              <FaArrowLeft className="h-4 w-4" />
+              Back to home
+            </Link>
+          </div>
 
-        {/* Separator */}
-        <div className="flex items-center my-4">
-          <hr className="flex-grow border-gray-600" />
-          <span className="mx-3 text-gray-400">or</span>
-          <hr className="flex-grow border-gray-600" />
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
+            <h2 className="mt-8 text-3xl font-bold">Welcome back</h2>
+            <p className="mt-2 text-gray-400">Log in to your account</p>
+
+            <form onSubmit={handleLogin} className="mt-8 space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                  className="border-gray-700 bg-[#12121D] text-white focus:border-[#A05CF5]"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <Link href="/forgot-password" className="text-sm text-[#A05CF5] hover:underline">
+                    Forgot password
+                  </Link>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  className="border-gray-700 bg-[#12121D] text-white focus:border-[#A05CF5]"
+                />
+              </div>
+
+              <Button type="submit" className="w-full bg-[#A05CF5] hover:bg-[#B16EFF]" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <FaSpinner className="mr-2 h-4 w-4 animate-spin" /> Logging in...
+                  </>
+                ) : (
+                  "Log In"
+                )}
+              </Button>
+
+              <div className="relative flex items-center py-2">
+                <div className="flex-grow border-t border-gray-700"></div>
+                <span className="mx-4 flex-shrink text-gray-400">or</span>
+                <div className="flex-grow border-t border-gray-700"></div>
+              </div>
+
+              <SocialAuth />
+
+              <p className="text-center text-sm text-gray-400">
+                Don't have an account?{" "}
+                <Link href="/signup" className="text-[#A05CF5] hover:underline">
+                  Sign up
+                </Link>
+              </p>
+            </form>
+          </motion.div>
         </div>
+      </div>
 
-        {/* Social login buttons */}
-        <button className="bg-[#5865F2] text-white rounded-md p-3 font-semibold hover:bg-[#4752C4] transition-colors">
-          Login with Discord
-        </button>
-        <button className="bg-white text-gray-900 rounded-md p-3 font-semibold border hover:bg-gray-100 transition-colors">
-          Login with Google
-        </button>
-        <button className="bg-gray-900 text-white rounded-md p-3 font-semibold border border-gray-600 hover:bg-gray-700 transition-colors">
-          Login with GitHub
-        </button>
+      {/* Right side - Image/Branding */}
+      <div className="hidden bg-[#12121D] lg:block lg:w-1/2">
+        <div className="flex h-full flex-col items-center justify-center p-12">
+          <div className="mb-8 text-center">
+            <h2 className="mb-4 text-4xl font-bold">Welcome back, developer</h2>
+            <p className="text-xl text-gray-400">Continue your journey with the Sustainovate</p>
+          </div>
+          <div className="relative h-64 w-full max-w-md">
+            <div className="absolute left-0 top-0 h-40 w-40 rounded-lg bg-[#A05CF5]/20 p-4">
+              <div className="h-full w-full rounded-md bg-[#12121D] p-4">
+                <FaCode className="h-8 w-8 text-[#A05CF5]" />
+                <div className="mt-2 h-2 w-16 rounded-full bg-gray-700"></div>
+                <div className="mt-2 h-2 w-24 rounded-full bg-gray-700"></div>
+              </div>
+            </div>
+            <div className="absolute bottom-0 right-0 h-40 w-40 rounded-lg bg-[#A05CF5]/20 p-4">
+              <div className="h-full w-full rounded-md bg-[#12121D] p-4">
+                <FaGithub className="h-8 w-8 text-[#A05CF5]" />
+                <div className="mt-2 h-2 w-16 rounded-full bg-gray-700"></div>
+                <div className="mt-2 h-2 w-24 rounded-full bg-gray-700"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  );
+  )
 }
+
