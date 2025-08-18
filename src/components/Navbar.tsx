@@ -11,6 +11,7 @@ export default function Navbar() {
           <li><a href="/leaderboard">Leaderboard</a></li>
           <li><a href="/login">Login</a></li>
           <li><a href="/signup">Signup</a></li>
+          <li><a href="/profile">Profile</a></li>
         </ul>
       </div>
     </nav>

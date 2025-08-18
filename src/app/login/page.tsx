@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import Link from "next/link"
 import { FaArrowLeft, FaCode, FaGithub, FaSpinner } from "react-icons/fa";
@@ -12,17 +10,45 @@ import { motion } from "framer-motion"
 import SocialAuth from "@/components/SocialAuth"
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false)
-      window.location.href = "/dashboard"
-    }, 1500)
-  }
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = { message: await response.text() };
+      }
+
+      setIsLoading(false);
+
+      if (response.ok) {
+        // if (data.token) localStorage.setItem("token", data.token);
+        window.location.href = "/events";
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.error(err);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
 
   return (
     <div className="flex min-h-screen bg-[#0A0A12] text-white">
@@ -47,6 +73,8 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className="border-gray-700 bg-[#12121D] text-white focus:border-[#A05CF5]"
                 />
@@ -63,6 +91,8 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className="border-gray-700 bg-[#12121D] text-white focus:border-[#A05CF5]"
                 />
@@ -125,4 +155,3 @@ export default function LoginPage() {
     </div>
   )
 }
-
