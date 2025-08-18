@@ -60,6 +60,9 @@ export default function ProfilePage() {
           <button className="flex-1 flex items-center justify-center gap-2 bg-[#A05CF5] hover:bg-[#B16EFF] py-2 rounded-lg">
             <FaEdit /> Edit Profile
           </button>
+          <button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 py-2 rounded-lg">
+            <FaSignOutAlt /> Delete User
+          </button>
           <button className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 py-2 rounded-lg">
             <FaSignOutAlt /> Logout
           </button>

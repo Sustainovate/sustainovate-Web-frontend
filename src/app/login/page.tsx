@@ -20,18 +20,24 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // <— important!
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = { message: await response.text() };
+      }
+
       setIsLoading(false);
 
       if (response.ok) {
-        if (data.token) localStorage.setItem("token", data.token);
+        // if (data.token) localStorage.setItem("token", data.token);
         window.location.href = "/events";
       } else {
         alert(data.message || "Login failed");
@@ -42,6 +48,7 @@ export default function LoginPage() {
       alert("Something went wrong. Please try again.");
     }
   };
+
 
   return (
     <div className="flex min-h-screen bg-[#0A0A12] text-white">
