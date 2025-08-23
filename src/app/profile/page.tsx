@@ -1,5 +1,6 @@
 "use client";
 
+import handleLogout from "@/components/UserAuth";
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaSignOutAlt } from "react-icons/fa";
 
@@ -63,7 +64,7 @@ export default function ProfilePage() {
           <button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 py-2 rounded-lg">
             <FaSignOutAlt /> Delete User
           </button>
-          <button className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 py-2 rounded-lg">
+          <button className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 py-2 rounded-lg" onClick={handleLogout}>
             <FaSignOutAlt /> Logout
           </button>
         </div>
