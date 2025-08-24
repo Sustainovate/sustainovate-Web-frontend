@@ -71,7 +71,7 @@ export default function ProfileSidebar() {
       </div>
 
       {/* Actions */}
-      <div className="p-2">
+      <div className="p-2 flex flex-col gap-2">
         <button className="w-full py-2 rounded-lg bg-[#A05CF5] hover:bg-[#B16EFF] transition text-sm font-medium">
           Manage Account
         </button>
