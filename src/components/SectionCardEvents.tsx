@@ -1,18 +1,19 @@
-import { motion, AnimatePresence } from "framer-motion"
-import { Loader2 } from "lucide-react"
-import { EventCard } from "./event-card"
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2 } from "lucide-react";
+import { EventCard } from "./event-card";
+import { useEffect, useState } from "react";
 
 interface Event {
-  _id: string
-  title: string
-  description: string
-  startTime: string
-  endTime: string
-  registrationEnd?: string
-  category: string[]
-  tags: string[]
-  thumbnailUrl?: string
-  registrationUserCount?: number
+  _id: string;
+  title: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  registrationEnd?: string;
+  category: string[];
+  tags: string[];
+  thumbnailUrl?: string;
+  registrationUsers?: string[];
 }
 
 interface EventsSectionProps {
@@ -21,29 +22,40 @@ interface EventsSectionProps {
 }
 
 function EventsSection({ loading, filteredEvents }: EventsSectionProps) {
+  const [currentUserId, setCurrentUserId] = useState<string>("");
+
+  // 🔑 Get current logged-in user once
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userRes = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me`,
+          { credentials: "include" }
+        );
+        const userData = await userRes.json();
+        setCurrentUserId(userData.user._id);
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+      }
+    };
+    fetchUser();
+  }, []);
+
   // Helper: classify event
-  const categorizeEvents = (events: any[]) => {
-    const now = new Date()
+  const categorizeEvents = (events: Event[]) => {
+    const now = new Date();
 
     return {
       present: events.filter(
-        (e) =>
-          new Date(e.startTime) <= now &&
-          new Date(e.endTime) >= now
+        (e) => new Date(e.startTime) <= now && new Date(e.endTime) >= now
       ),
-      upcoming: events.filter(
-        (e) => new Date(e.startTime) > now
-      ),
-      past: events.filter(
-        (e) => new Date(e.endTime) < now
-      ),
-    }
-  }
+      upcoming: events.filter((e) => new Date(e.startTime) > now),
+      past: events.filter((e) => new Date(e.endTime) < now),
+    };
+  };
 
-  const { present, upcoming, past } = categorizeEvents(filteredEvents)
-
-  // Merge in the desired order
-  const orderedEvents = [...present, ...upcoming, ...past]
+  const { present, upcoming, past } = categorizeEvents(filteredEvents);
+  const orderedEvents = [...present, ...upcoming, ...past];
 
   return (
     <section>
@@ -86,8 +98,8 @@ function EventsSection({ loading, filteredEvents }: EventsSectionProps) {
                         : 0
                     }
                     category={e.category.join(", ")}
-                    interestedCount={e.registrationUserCount}
-                    tags={e.tags}
+                    registrationUsers={e.registrationUsers || []} // ✅ fixed
+                    currentUserId={currentUserId} // ✅ new prop
                   />
                 </motion.div>
               ))}
@@ -100,7 +112,7 @@ function EventsSection({ loading, filteredEvents }: EventsSectionProps) {
         </AnimatePresence>
       )}
     </section>
-  )
+  );
 }
 
-export default EventsSection
+export default EventsSection;

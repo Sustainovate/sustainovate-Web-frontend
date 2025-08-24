@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui";
 import { Calendar, Clock3, Tag as TagIcon, Users } from "lucide-react";
+import { useEvent } from "@/hooks/useEvent"; // custom hook
 
 export type EventCardProps = {
   id: string;
@@ -13,9 +14,8 @@ export type EventCardProps = {
   category?: string;
   priceGBP?: number;
   thumbnailUrl?: string;
-  interestedCount: number;
-  tags?: string[];
-  onJoin?: (id: string) => void;
+  registrationUsers: string[]; // 👈 replaces interestedCount
+  currentUserId: string; // 👈 know if this user has joined
 };
 
 export function EventCard({
@@ -23,32 +23,33 @@ export function EventCard({
   title,
   description,
   date,
-  durationDays,
+  durationDays = 1,
   category,
   thumbnailUrl,
-  interestedCount,
-  tags,
-  onJoin,
+  registrationUsers,
+  currentUserId,
 }: EventCardProps) {
-  const chips = [...(tags || [])];
+  const { isJoined, toggleJoin, count } = useEvent({
+    id,
+    registrationUsers,
+    currentUserId,
+  });
 
   const start = new Date(date);
-  const end = new Date(start.getTime() + durationDays! * 24 * 60 * 60 * 1000);
+  const end = new Date(start.getTime() + durationDays * 24 * 60 * 60 * 1000);
   const now = new Date();
 
   let durationLabel = "";
-
   if (now > end) {
     durationLabel = "OVER";
   } else if (now >= start && now <= end) {
     durationLabel = "Present";
   } else {
-    // 👇 calculate days left until start
     const diffMs = start.getTime() - now.getTime();
     const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
     if (diffDays > 1) {
-      durationLabel = `${diffDays - 1 } days left`;
+      durationLabel = `${diffDays - 1} days left`;
     } else if (diffDays === 1) {
       durationLabel = "1 day left";
     } else {
@@ -76,26 +77,14 @@ export function EventCard({
 
       {/* Content */}
       <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
-        {/* Top section: title + desc */}
+        {/* Top section */}
         <div className="space-y-2">
           <h3 className="text-lg font-semibold leading-tight line-clamp-1">{title}</h3>
           <p className="text-sm text-gray-400 line-clamp-2">{description}</p>
         </div>
 
-        {/* Middle section: tags + meta */}
+        {/* Middle section */}
         <div className="mt-3 space-y-2">
-          {chips.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
-              {chips.slice(0, 5).map((c) => (
-                <span
-                  key={c}
-                  className="rounded-full bg-neutral-800 px-2 py-0.5 text-[10px] text-gray-300 border border-neutral-700 line-clamp-1"
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-          )}
           <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-gray-300">
             <span className="inline-flex items-center gap-1">
               <Calendar className="w-4 h-4" />
@@ -108,17 +97,19 @@ export function EventCard({
           </div>
         </div>
 
-        {/* Footer pinned bottom-right */}
+        {/* Footer */}
         <div className="mt-4 flex justify-end items-center gap-3">
           <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-300">
             <Users className="w-4 h-4" />
-            <span>{interestedCount.toLocaleString()} joined</span>
+            <span>{count.toLocaleString()} joined</span>
           </div>
           <Button
-            onClick={() => onJoin?.(id)}
-            className="w-32 sm:w-36 bg-indigo-500 hover:bg-indigo-600 text-white"
+            onClick={toggleJoin}
+            className={`w-32 sm:w-36 ${
+              isJoined ? "bg-red-500 hover:bg-red-600" : "bg-indigo-500 hover:bg-indigo-600"
+            } text-white`}
           >
-            Join now
+            {isJoined ? "Unjoin" : "Join now"}
           </Button>
         </div>
       </div>

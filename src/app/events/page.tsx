@@ -53,7 +53,7 @@ export default function EventsPage() {
           status: item.status ?? "draft",
           startTime: item.startTime,
           endTime: item.endTime,
-          registrationDeadline: item.registrationDeadline,
+          registrationUsers: item.registrationUsers,
           registrationUserCount: item.registrationUserCount,
           capacity: item.capacity ?? 100,
           isOpen: item.isOpen ?? true,
