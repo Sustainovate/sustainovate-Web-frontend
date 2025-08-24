@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Logo from "./ui/Logo";
 
 interface User {
   _id: string;
@@ -37,8 +38,10 @@ export default function Navbar() {
 
   return (
     <nav className="bg-gray-900 text-white p-4">
-      <div className="container mx-auto flex justify-between">
-        <h1 className="text-lg font-bold">My App</h1>
+      <div className="container mx-auto flex justify-between items-center">
+        <h1 className="text-lg font-bold">
+          <Logo/>
+        </h1>
         <ul className="flex space-x-4">
           <li><Link href="/">Home</Link></li>
           <li><Link href="/events">Events</Link></li>
