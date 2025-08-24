@@ -1,9 +1,29 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { EventCard } from "@/components/event-card";
-import { AnimatePresence, motion } from "framer-motion";
-import { Loader2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import EventsSection from "@/components/SectionCardEvents";
+
+export interface Event {
+  _id: string;
+  title: string;
+  description: string;
+  category: string[];
+  tags: string[];
+  status: "draft" | "upcoming" | "present" | "past";
+  startTime: string;
+  endTime: string;
+  registrationDeadline?: string;
+  registrationStart?: string;
+  registrationEnd?: string;
+  registrationUserCount?: number;
+  capacity: number;
+  isOpen: boolean;
+  location?: string;
+  mode?: string;
+  domains: string[];
+  thumbnailUrl?: string;
+  slug: string;
+  meta: Record<string, unknown>;
+}
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -34,7 +54,7 @@ export default function EventsPage() {
           startTime: item.startTime,
           endTime: item.endTime,
           registrationDeadline: item.registrationDeadline,
-          registrationUserCount: item.registrationUserCount ?? 0,
+          registrationUserCount: item.registrationUserCount,
           capacity: item.capacity ?? 100,
           isOpen: item.isOpen ?? true,
           location: item.location,
@@ -66,8 +86,8 @@ export default function EventsPage() {
     const categoriesSet = new Set<string>();
 
     events.forEach((e) => {
-      (e.tags ?? []).forEach((t) => tagsSet.add(t));
-      (e.category ?? []).forEach((c) => categoriesSet.add(c));
+      (e.tags ?? []).forEach((t: string) => tagsSet.add(t));
+      (e.category ?? []).forEach((c: string) => categoriesSet.add(c));
     });
 
     return {
@@ -89,8 +109,10 @@ export default function EventsPage() {
         return false;
       }
 
-      const regStart = new Date(e.registrationStart)
-      const regEnd = new Date(e.registrationEnd)
+      const regStart = e.registrationStart
+        ? new Date(e.registrationStart)
+        : null;
+      const regEnd = e.registrationEnd ? new Date(e.registrationEnd) : null;
 
       if (selectedDate) {
         const selected = new Date(selectedDate);
@@ -162,45 +184,45 @@ export default function EventsPage() {
                     )
                   }
                   className={`px-3 py-1 rounded-full text-sm font-medium ${selectedTag.includes(tag)
-                      ? "bg-red-600 text-white"
-                      : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
+                    ? "bg-red-600 text-white"
+                    : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
                     }`}
                 >
-                  { tag }
+                  {tag}
                 </button>
               ))}
+            </div>
           </div>
-      </div>
 
-      {/* Categories */}
-      <div>
-        <h3 className="text-lg font-semibold">Categories</h3>
-        <div className="flex flex-col gap-2 mt-2">
-          {uniqueCategories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() =>
-                setSelectedCategory(prev =>
-                  prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
-                )
-              }
-              className={`py-2 px-3 rounded-md text-sm font-medium text-left ${selectedCategory.includes(cat)
-                ? "bg-red-600 text-white"
-                : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
-                }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
-    </aside>
+          {/* Categories */}
+          <div>
+            <h3 className="text-lg font-semibold">Categories</h3>
+            <div className="flex flex-col gap-2 mt-2">
+              {uniqueCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() =>
+                    setSelectedCategory(prev =>
+                      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+                    )
+                  }
+                  className={`py-2 px-3 rounded-md text-sm font-medium text-left ${selectedCategory.includes(cat)
+                    ? "bg-red-600 text-white"
+                    : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
+                    }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </aside>
 
-        {/* --- Events List --- */ }
-  <EventsSection
-    loading={loading}
-    filteredEvents={filteredEvents}
-  />
+        {/* --- Events List --- */}
+        <EventsSection
+          loading={loading}
+          filteredEvents={filteredEvents}
+        />
 
       </div >
     </main >

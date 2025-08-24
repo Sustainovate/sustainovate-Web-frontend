@@ -2,9 +2,27 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Loader2 } from "lucide-react"
 import { EventCard } from "./event-card"
 
-function EventsSection({ loading, filteredEvents }) {
+interface Event {
+  _id: string
+  title: string
+  description: string
+  startTime: string
+  endTime: string
+  registrationEnd?: string
+  category: string[]
+  tags: string[]
+  thumbnailUrl?: string
+  registrationUserCount?: number
+}
+
+interface EventsSectionProps {
+  loading: boolean;
+  filteredEvents: Event[];
+}
+
+function EventsSection({ loading, filteredEvents }: EventsSectionProps) {
   // Helper: classify event
-  const categorizeEvents = (events) => {
+  const categorizeEvents = (events: any[]) => {
     const now = new Date()
 
     return {
@@ -53,6 +71,7 @@ function EventsSection({ loading, filteredEvents }) {
                     id={e._id}
                     title={e.title}
                     description={e.description}
+                    thumbnailUrl={e.thumbnailUrl}
                     date={e.startTime}
                     durationDays={
                       e.registrationEnd
