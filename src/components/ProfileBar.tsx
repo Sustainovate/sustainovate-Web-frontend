@@ -65,6 +65,9 @@ export default function ProfileSidebar() {
         <p className="text-gray-300 text-sm max-w-[140px]">
           {user.email}
         </p>
+        <p className="text-gray-300 text-sm max-w-[140px]">
+          {user.role}
+        </p>
       </div>
 
       {/* Actions */}

@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Logo from "./ui/Logo";
-import { Menu } from "lucide-react";
 import ProfileSidebar from "./ProfileBar"; // keep but will behave like dropdown
 
 interface User {
@@ -40,8 +39,6 @@ export default function Navbar() {
     }
     checkAuth();
   }, []);
-
-  console.log(user)
 
   // close menu when clicking outside
   useEffect(() => {
