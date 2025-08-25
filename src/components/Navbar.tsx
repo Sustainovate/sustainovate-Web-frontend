@@ -51,55 +51,55 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-gray-900 text-white p-4 relative shadow-md">
+    <nav className="glass backdrop-blur-xl border-b border-purple-500/20 text-white p-4 shadow-2xl relative z-[9999]">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-lg font-bold">
           <Link href="/"><Logo /></Link>
         </h1>
 
-        <ul className="flex space-x-4 items-center">
+        <ul className="flex space-x-2 items-center">
           <li>
-            <Link className="px-3 py-2 rounded hover:bg-gray-700 transition-colors" href="/">Home</Link>
+            <Link className="px-4 py-2 rounded-lg hover:bg-purple-500/20 transition-all duration-300 font-medium glow-hover" href="/">Home</Link>
           </li>
           <li>
-            <Link className="px-3 py-2 rounded hover:bg-gray-700 transition-colors" href="/events">Events</Link>
+            <Link className="px-4 py-2 rounded-lg hover:bg-purple-500/20 transition-all duration-300 font-medium glow-hover" href="/events">Events</Link>
           </li>
           <li>
-            <Link className="px-3 py-2 rounded hover:bg-gray-700 transition-colors" href="/leaderboard">Leaderboard</Link>
+            <Link className="px-4 py-2 rounded-lg hover:bg-purple-500/20 transition-all duration-300 font-medium glow-hover" href="/leaderboard">Leaderboard</Link>
           </li>
 
           {loading ? null : !user ? (
             <li>
-              <Link className="px-3 py-2 rounded hover:bg-gray-700 transition-colors" href="/login">Login</Link>
+              <Link className="px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-500 rounded-lg hover:from-purple-500 hover:to-purple-400 transition-all duration-300 font-medium shadow-lg glow-hover" href="/login">Login</Link>
             </li>
           ) : (
             <>
               {(user.role === "admin" || user.role === "moderator") && (
                 <li>
-                  <Link className="px-3 py-2 rounded hover:bg-gray-700 transition-colors" href="/admin" onClick={() => setOpen(false)}>Admin</Link>
+                  <Link className="px-4 py-2 rounded-lg hover:bg-purple-500/20 transition-all duration-300 font-medium glow-hover" href="/admin" onClick={() => setOpen(false)}>Admin</Link>
                 </li>
               )}
               {user.role === "moderator" && (
                 <li>
-                  <Link className="px-3 py-2 rounded hover:bg-gray-700 transition-colors" href="/moderator" onClick={() => setOpen(false)}>Moderator</Link>
+                  <Link className="px-4 py-2 rounded-lg hover:bg-purple-500/20 transition-all duration-300 font-medium glow-hover" href="/moderator" onClick={() => setOpen(false)}>Moderator</Link>
                 </li>
               )}
 
               <li className="relative" ref={menuRef}>
                 <button
                   onClick={() => setOpen(!open)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors text-sm font-medium shadow-sm"
+                  className="flex items-center gap-3 px-4 py-2 rounded-xl glass hover:bg-purple-500/20 transition-all duration-300 text-sm font-medium shadow-lg glow-hover"
                 >
                   <img
                     src={user.avatar || `https://i.pravatar.cc/150?u=${user._id}`}
                     alt="avatar"
-                    className="h-7 w-7 rounded-full border-2 border-purple-500"
+                    className="h-8 w-8 rounded-full border-2 border-purple-400 shadow-md"
                   />
-                  <span className="truncate max-w-[80px]">{user.username.split(" ")[0]}</span>
+                  <span className="truncate max-w-[80px] text-white">{user.username.split(" ")[0]}</span>
                 </button>
 
                 {open && (
-                  <div className="absolute right-0 mt-2 w-72 z-50 bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                  <div className="fixed right-4 top-16 w-72 z-[99999] glass rounded-xl shadow-2xl overflow-hidden border border-purple-500/30">
                     <ProfileSidebar />
                   </div>
                 )}
