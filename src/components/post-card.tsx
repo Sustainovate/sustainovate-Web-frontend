@@ -51,34 +51,39 @@ export function PostCard({ post }: PostCardProps) {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl bg-[#12121D]">
+    <motion.div 
+      className="overflow-hidden rounded-2xl glass border border-purple-500/20 shadow-2xl hover:shadow-purple-500/10 transition-all duration-300"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02 }}
+    >
       {/* Post Header */}
-      <div className="flex items-center justify-between p-3">
-        <Link href={`/profile/${post.user.username}`} className="flex items-center gap-2">
-          <Avatar className="h-8 w-8">
+      <div className="flex items-center justify-between p-4">
+        <Link href={`/profile/${post.user.username}`} className="flex items-center gap-3 hover:underline group">
+          <Avatar className="h-10 w-10 ring-2 ring-purple-500/30 group-hover:ring-purple-400/50 transition-all">
             <AvatarImage src={post.user.avatar} alt={post.user.name} />
-            <AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback className="bg-gradient-to-br from-purple-500 to-green-500 text-white font-semibold">{post.user.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <span className="font-medium">{post.user.username}</span>
+          <span className="font-semibold text-white">{post.user.username}</span>
         </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-full text-gray-400 hover:bg-transparent hover:text-white"
+              className="h-9 w-9 rounded-full text-gray-400 hover:bg-purple-500/20 hover:text-white transition-all"
             >
               <MoreHorizontal className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-[#12121D] text-white">
-            <DropdownMenuItem className="focus:bg-[#A05CF5]/10 focus:text-white">Follow</DropdownMenuItem>
-            <DropdownMenuItem className="focus:bg-[#A05CF5]/10 focus:text-white">Add to favorites</DropdownMenuItem>
-            <DropdownMenuItem className="focus:bg-[#A05CF5]/10 focus:text-white">Go to post</DropdownMenuItem>
-            <DropdownMenuItem className="focus:bg-[#A05CF5]/10 focus:text-white">Share to...</DropdownMenuItem>
-            <DropdownMenuItem className="focus:bg-[#A05CF5]/10 focus:text-white">Copy link</DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-gray-700" />
-            <DropdownMenuItem className="focus:bg-[#A05CF5]/10 focus:text-white">Report</DropdownMenuItem>
+          <DropdownMenuContent align="end" className="glass border border-purple-500/30 text-white">
+            <DropdownMenuItem className="focus:bg-purple-500/20 focus:text-white">Follow</DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-purple-500/20 focus:text-white">Add to favorites</DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-purple-500/20 focus:text-white">Go to post</DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-purple-500/20 focus:text-white">Share to...</DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-purple-500/20 focus:text-white">Copy link</DropdownMenuItem>
+            <DropdownMenuSeparator className="bg-purple-500/30" />
+            <DropdownMenuItem className="focus:bg-purple-500/20 focus:text-white">Report</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -91,13 +96,13 @@ export function PostCard({ post }: PostCardProps) {
       )}
 
       {/* Post Actions */}
-      <div className="p-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-5">
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 rounded-full p-0 hover:bg-transparent"
+              className="h-10 w-10 rounded-full p-0 hover:bg-purple-500/20 transition-all duration-300"
               onClick={handleLike}
             >
               <motion.div
@@ -105,96 +110,96 @@ export function PostCard({ post }: PostCardProps) {
                 animate={liked ? { scale: [1, 1.2, 1] } : {}}
                 transition={{ duration: 0.3 }}
               >
-                <Heart className={`h-7 w-7 ${liked ? "fill-[#A05CF5] text-[#A05CF5]" : ""}`} />
+                <Heart className={`h-7 w-7 ${liked ? "fill-purple-500 text-purple-500" : "text-gray-400"}`} />
               </motion.div>
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 rounded-full p-0 hover:bg-transparent"
+              className="h-10 w-10 rounded-full p-0 hover:bg-purple-500/20 transition-all duration-300"
               onClick={() => setShowComments(!showComments)}
             >
-              <MessageCircle className="h-7 w-7" />
+              <MessageCircle className="h-7 w-7 text-gray-400" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full p-0 hover:bg-transparent">
-              <Share2 className="h-7 w-7" />
+            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full p-0 hover:bg-purple-500/20 transition-all duration-300">
+              <Share2 className="h-7 w-7 text-gray-400" />
             </Button>
           </div>
           <Button
             variant="ghost"
             size="icon"
-            className="h-9 w-9 rounded-full p-0 hover:bg-transparent"
+            className="h-10 w-10 rounded-full p-0 hover:bg-purple-500/20 transition-all duration-300"
             onClick={() => setBookmarked(!bookmarked)}
           >
-            <Bookmark className={`h-7 w-7 ${bookmarked ? "fill-[#A05CF5] text-[#A05CF5]" : ""}`} />
+            <Bookmark className={`h-7 w-7 ${bookmarked ? "fill-purple-500 text-purple-500" : "text-gray-400"}`} />
           </Button>
         </div>
 
         {/* Likes count */}
-        <div className="mt-2 font-semibold">{likesCount} likes</div>
+        <div className="mt-2 font-semibold text-white">{likesCount} likes</div>
 
         {/* Caption */}
-        <div className="mt-1">
-          <span className="font-semibold">{post.user.username}</span> <span>{post.content}</span>
+        <div className="mt-1 text-gray-200">
+          <span className="font-semibold text-white">{post.user.username}</span> <span>{post.content}</span>
         </div>
 
         {/* View comments button */}
-        <button className="mt-1 text-sm text-gray-400" onClick={() => setShowComments(!showComments)}>
+        <button className="mt-1 text-sm text-purple-400 hover:underline transition-colors" onClick={() => setShowComments(!showComments)}>
           View all {post.comments} comments
         </button>
 
         {/* Timestamp */}
-        <div className="mt-1 text-xs uppercase text-gray-400">{post.timeAgo}</div>
+        <div className="mt-1 text-xs uppercase text-gray-500 tracking-wide">{post.timeAgo}</div>
       </div>
 
       {/* Comments Section */}
       {showComments && (
-        <div className="border-t border-gray-800 p-3">
-          <div className="mb-4 space-y-3">
-            <div className="flex gap-2">
-              <Avatar className="h-8 w-8">
+        <div className="border-t border-purple-500/30 p-4 glass">
+          <div className="mb-4 space-y-4">
+            <div className="flex gap-3">
+              <Avatar className="h-8 w-8 ring-2 ring-purple-500/20">
                 <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Commenter" />
-                <AvatarFallback>U</AvatarFallback>
+                <AvatarFallback className="bg-gradient-to-br from-purple-500 to-green-500 text-white">U</AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <p>
-                  <span className="font-semibold">user123</span> <span>Great work! I love the design.</span>
+                <p className="text-gray-200">
+                  <span className="font-semibold text-white">user123</span> <span>Great work! I love the design.</span>
                 </p>
                 <div className="mt-1 flex items-center gap-3 text-xs text-gray-400">
                   <span>1h</span>
-                  <button className="font-semibold">Reply</button>
+                  <button className="font-semibold hover:text-purple-400 transition-colors">Reply</button>
                 </div>
               </div>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full p-0">
-                <Heart className="h-3 w-3" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full p-0 hover:bg-purple-500/20">
+                <Heart className="h-3 w-3 text-gray-400" />
               </Button>
             </div>
-            <div className="flex gap-2">
-              <Avatar className="h-8 w-8">
+            <div className="flex gap-3">
+              <Avatar className="h-8 w-8 ring-2 ring-purple-500/20">
                 <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Commenter" />
-                <AvatarFallback>D</AvatarFallback>
+                <AvatarFallback className="bg-gradient-to-br from-purple-500 to-green-500 text-white">D</AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <p>
-                  <span className="font-semibold">devfan</span> <span>Would love to see the code for this!</span>
+                <p className="text-gray-200">
+                  <span className="font-semibold text-white">devfan</span> <span>Would love to see the code for this!</span>
                 </p>
                 <div className="mt-1 flex items-center gap-3 text-xs text-gray-400">
                   <span>30m</span>
-                  <button className="font-semibold">Reply</button>
+                  <button className="font-semibold hover:text-purple-400 transition-colors">Reply</button>
                 </div>
               </div>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full p-0">
-                <Heart className="h-3 w-3" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full p-0 hover:bg-purple-500/20">
+                <Heart className="h-3 w-3 text-gray-400" />
               </Button>
             </div>
           </div>
-          <div className="flex items-center gap-2 border-t border-gray-800 pt-3">
+          <div className="flex items-center gap-3 border-t border-purple-500/30 pt-3">
             <Input
               type="text"
               placeholder="Add a comment..."
-              className="flex-1 border-0 bg-transparent p-0 text-sm focus:ring-0"
+              className="flex-1 border-0 bg-transparent p-0 text-sm focus:ring-0 text-white placeholder:text-gray-500"
             />
-            <Button variant="ghost" size="sm" className="text-[#A05CF5]">
+            <Button variant="ghost" size="sm" className="text-purple-400 font-semibold">
               Post
             </Button>
           </div>
@@ -203,20 +208,20 @@ export function PostCard({ post }: PostCardProps) {
 
       {/* Add comment */}
       {!showComments && (
-        <div className="border-t border-gray-800 p-3">
-          <div className="flex items-center gap-2">
+        <div className="border-t border-purple-500/30 p-4 glass">
+          <div className="flex items-center gap-3">
             <Input
               type="text"
               placeholder="Add a comment..."
-              className="flex-1 border-0 bg-transparent p-0 text-sm focus:ring-0"
+              className="flex-1 border-0 bg-transparent p-0 text-sm focus:ring-0 text-white placeholder:text-gray-500"
             />
-            <Button variant="ghost" size="sm" className="text-[#A05CF5]">
+            <Button variant="ghost" size="sm" className="text-purple-400 font-semibold">
               Post
             </Button>
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }
 

@@ -77,16 +77,16 @@ const ExploreDomains: FC = () => {
   return (
     <section
       id="DOMAINS"
-      className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-gray-50 via-green-50 to-yellow-50"
+      className="relative py-16 sm:py-20 lg:py-24 bg-transparent"
       aria-label="Explore our Domains section"
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-6 sm:mb-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8">
             Explore our Domains
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-4xl mx-auto">
             Choose an innovation path that aligns with your passion and expertise.
           </p>
         </div>
@@ -96,11 +96,11 @@ const ExploreDomains: FC = () => {
           {domains.map((domain, idx) => (
             <div
               key={idx}
-              className={`domain-card bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-${domain.color}-200/50`}
+              className={`domain-card glass backdrop-blur-xl rounded-2xl p-6 sm:p-8 shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 transform hover:scale-105 border border-purple-500/20`}
             >
               <div className="mb-4">
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 bg-${domain.color}-600 rounded-xl flex items-center justify-center shadow-md`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 ${getGradientColor(domain.color)} rounded-xl flex items-center justify-center shadow-lg`}
                 >
                   <svg
                     className="w-5 h-5 sm:w-6 sm:h-6 text-white"
@@ -113,18 +113,18 @@ const ExploreDomains: FC = () => {
                 </div>
               </div>
               <h3
-                className={`text-lg sm:text-xl font-bold text-${domain.color}-700 mb-3`}
+                className={`text-lg sm:text-xl font-bold ${getTextColor(domain.color)} mb-3`}
               >
                 {domain.title}
               </h3>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
+              <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-4">
                 {domain.description}
               </p>
               <div className="flex flex-wrap gap-2">
                 {domain.tags.map((tag, tagIdx) => (
                   <span
                     key={tagIdx}
-                    className={`bg-${domain.color}-100 text-${domain.color}-800 text-xs px-2 py-1 rounded-full font-medium`}
+                    className={`${getTagColor(domain.color)} text-xs px-3 py-1 rounded-full font-medium`}
                   >
                     {tag}
                   </span>
@@ -137,14 +137,45 @@ const ExploreDomains: FC = () => {
 
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-green-100/30 to-green-200/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 -right-20 w-60 h-60 bg-gradient-to-l from-yellow-100/30 to-yellow-200/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-10 left-1/3 w-32 h-32 bg-gradient-to-t from-orange-100/30 to-yellow-200/20 rounded-full blur-2xl"></div>
-        <div className="absolute top-1/4 left-1/4 w-24 h-24 bg-gradient-to-br from-green-100/40 to-emerald-100/20 rounded-full blur-xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-36 h-36 bg-gradient-to-tl from-teal-100/30 to-green-200/20 rounded-full blur-2xl"></div>
+        <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 -right-20 w-60 h-60 bg-gradient-to-l from-purple-500/10 to-purple-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-10 left-1/3 w-32 h-32 bg-gradient-to-t from-green-400/10 to-purple-400/10 rounded-full blur-2xl"></div>
+        <div className="absolute top-1/4 left-1/4 w-24 h-24 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-full blur-xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-36 h-36 bg-gradient-to-tl from-purple-500/10 to-green-500/10 rounded-full blur-2xl"></div>
       </div>
     </section>
   );
+};
+
+// Helper functions for consistent theming
+const getGradientColor = (color: string) => {
+  switch (color) {
+    case 'green': return 'bg-gradient-to-r from-green-500 to-emerald-500';
+    case 'yellow': return 'bg-gradient-to-r from-purple-500 to-purple-600';
+    case 'teal': return 'bg-gradient-to-r from-green-400 to-green-500';
+    case 'blue': return 'bg-gradient-to-r from-purple-400 to-purple-500';
+    default: return 'bg-gradient-to-r from-purple-500 to-purple-600';
+  }
+};
+
+const getTextColor = (color: string) => {
+  switch (color) {
+    case 'green': return 'text-green-400';
+    case 'yellow': return 'text-purple-400';
+    case 'teal': return 'text-green-400';
+    case 'blue': return 'text-purple-400';
+    default: return 'text-purple-400';
+  }
+};
+
+const getTagColor = (color: string) => {
+  switch (color) {
+    case 'green': return 'bg-green-500/20 text-green-300';
+    case 'yellow': return 'bg-purple-500/20 text-purple-300';
+    case 'teal': return 'bg-green-500/20 text-green-300';
+    case 'blue': return 'bg-purple-500/20 text-purple-300';
+    default: return 'bg-purple-500/20 text-purple-300';
+  }
 };
 
 export default ExploreDomains;

@@ -53,7 +53,7 @@ export default function ProfileSidebar() {
     );
 
   return (
-    <div className="bg-[#181820] text-white rounded-xl shadow-2xl border border-white/10">
+    <div className="bg-[#181820] text-white rounded-xl shadow-2xl border border-white/10 relative z-[9999]">
       {/* User Info */}
       <div className="flex flex-col content-center items-center gap-3 p-4 border-b border-white/10">
         <img
@@ -62,12 +62,8 @@ export default function ProfileSidebar() {
           className="h-12 w-12 rounded-full border-2 border-[#A05CF5] shadow"
         />
         <h2 className="font-semibold text-sm">{user.username}</h2>
-        <p className="text-gray-300 text-sm max-w-[140px]">
-          {user.email}
-        </p>
-        <p className="text-gray-300 text-sm max-w-[140px]">
-          {user.role}
-        </p>
+        <p className="text-gray-300 text-sm max-w-[140px]">{user.email}</p>
+        <p className="text-gray-300 text-sm max-w-[140px]">{user.role}</p>
       </div>
 
       {/* Actions */}

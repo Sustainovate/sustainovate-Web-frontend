@@ -148,83 +148,96 @@ export default function EventsPage() {
 
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-gray-100 p-4 sm:p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
-        {/* --- Side Panel (Filters) --- */}
-        <aside className="bg-neutral-900 p-6 rounded-xl shadow-lg space-y-6 h-fit">
-          {/* Status Filter */}
-          <div>
-            <h3 className="text-lg font-semibold">Status</h3>
-            <div className="flex flex-col gap-2 mt-2">
-              {["all", "upcoming", "present", "past"].map((status) => (
-                <button
-                  key={status}
-                  onClick={() => setStatusFilter(status as any)}
-                  className={`py-2 px-3 rounded-md text-sm font-medium text-left ${statusFilter === status
-                    ? "bg-red-600 text-white"
-                    : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
-                    }`}
-                >
-                  {status.charAt(0).toUpperCase() + status.slice(1)}
-                </button>
-              ))}
+    <main className="min-h-screen bg-gradient-to-br from-[#0A0A12] via-[#1A1A2E] to-[#16213E] text-gray-100 p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-green-400 bg-clip-text text-transparent mb-2">
+            Events
+          </h1>
+          <p className="text-gray-300 text-lg">
+            Discover and participate in our sustainability events
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
+          {/* --- Side Panel (Filters) --- */}
+          <aside className="glass rounded-2xl p-6 border border-purple-500/20 shadow-2xl space-y-6 h-fit">
+            {/* Status Filter */}
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-3">Status</h3>
+              <div className="flex flex-col gap-2">
+                {["all", "upcoming", "present", "past"].map((status) => (
+                  <button
+                    key={status}
+                    onClick={() => setStatusFilter(status as any)}
+                    className={`py-3 px-4 rounded-xl text-sm font-medium text-left transition-all duration-300 ${statusFilter === status
+                      ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg"
+                      : "bg-black/30 text-gray-300 hover:bg-purple-500/20 hover:text-white"
+                      }`}
+                  >
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
+
+            {/* Tags */}
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-3">Tags</h3>
+              <div className="flex flex-wrap gap-2">
+                {uniqueTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() =>
+                      setSelectedTag(prev =>
+                        prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+                      )
+                    }
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedTag.includes(tag)
+                      ? "bg-gradient-to-r from-green-500 to-green-400 text-white shadow-lg"
+                      : "bg-black/30 text-gray-300 hover:bg-green-500/20 hover:text-white border border-green-500/30"
+                      }`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Categories */}
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-3">Categories</h3>
+              <div className="flex flex-col gap-2">
+                {uniqueCategories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() =>
+                      setSelectedCategory(prev =>
+                        prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+                      )
+                    }
+                    className={`py-3 px-4 rounded-xl text-sm font-medium text-left transition-all duration-300 ${selectedCategory.includes(cat)
+                      ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg"
+                      : "bg-black/30 text-gray-300 hover:bg-purple-500/20 hover:text-white"
+                      }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          {/* --- Events List --- */}
+          <div className="glass rounded-2xl border border-purple-500/20 shadow-2xl overflow-hidden">
+            <EventsSection
+              loading={loading}
+              filteredEvents={filteredEvents}
+            />
           </div>
 
-          {/* Tags */}
-          <div>
-            <h3 className="text-lg font-semibold">Tags</h3>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {uniqueTags.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() =>
-                    setSelectedTag(prev =>
-                      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
-                    )
-                  }
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${selectedTag.includes(tag)
-                    ? "bg-red-600 text-white"
-                    : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
-                    }`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Categories */}
-          <div>
-            <h3 className="text-lg font-semibold">Categories</h3>
-            <div className="flex flex-col gap-2 mt-2">
-              {uniqueCategories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() =>
-                    setSelectedCategory(prev =>
-                      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
-                    )
-                  }
-                  className={`py-2 px-3 rounded-md text-sm font-medium text-left ${selectedCategory.includes(cat)
-                    ? "bg-red-600 text-white"
-                    : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
-                    }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        {/* --- Events List --- */}
-        <EventsSection
-          loading={loading}
-          filteredEvents={filteredEvents}
-        />
-
-      </div >
-    </main >
+        </div>
+      </div>
+    </main>
   );
 }

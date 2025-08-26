@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaTwitter } from "react-icons/fa";
 
@@ -7,112 +7,102 @@ interface TeamMember {
   id: number;
   name: string;
   role: string;
-  image: string;
-  linkedin?: string;
   github?: string;
+  linkedin?: string;
   twitter?: string;
 }
 
 const team: TeamMember[] = [
   {
     id: 1,
-    name: "John Doe",
+    name: "Jit Mukherjee",
     role: "Team Lead",
-    image: "https://via.placeholder.com/150",
-    linkedin: "#",
-    github: "#",
-    twitter: "#",
+    github: "codesbyjit",
+    linkedin: "https://linkedin.com/in/jit",
+    twitter: "https://twitter.com/jit",
   },
   {
     id: 2,
-    name: "Jane Smith",
+    name: "Mainak Panda",
     role: "Designer",
-    image: "https://via.placeholder.com/150",
-    linkedin: "#",
-    github: "#",
-  },
-  {
-    id: 3,
-    name: "Alex Johnson",
-    role: "Developer",
-    image: "https://via.placeholder.com/150",
-    linkedin: "#",
-    github: "#",
+    github: "0xmainak",
+    linkedin: "https://linkedin.com/in/mainak",
   },
 ];
 
 export default function TeamOrgChart() {
-  const [active, setActive] = useState<number | null>(null);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 flex flex-col items-center py-10 px-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-12">Our Team</h1>
-      <div className="grid md:grid-cols-3 gap-10 w-full max-w-6xl">
-        {team.map((member) => (
-          <motion.div
-            key={member.id}
-            className="relative bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer"
-            whileHover={{ y: -8 }}
-            onClick={() => setActive(active === member.id ? null : member.id)}
-          >
-            {/* Profile Image */}
-            <div className="h-48 w-full overflow-hidden">
-              <img
-                src={member.image}
-                alt={member.name}
-                className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-              />
-            </div>
+    <div className="min-h-screen bg-transparent flex flex-col items-center py-16 px-4">
+      <h1 className="text-5xl font-extrabold text-white mb-14 tracking-tight drop-shadow-lg">
+        Meet Our Team
+      </h1>
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 w-full max-w-7xl">
+        {team.map((member) => {
+          const avatarUrl = member.github
+            ? `https://github.com/${member.github}.png`
+            : "https://via.placeholder.com/150";
 
-            {/* Info */}
-            <div className="p-6 text-center">
-              <h2 className="text-xl font-semibold text-gray-800">
-                {member.name}
-              </h2>
-              <p className="text-sm text-gray-500">{member.role}</p>
-            </div>
-
-            {/* Social Icons */}
+          return (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={
-                active === member.id
-                  ? { opacity: 1, height: "auto" }
-                  : { opacity: 0, height: 0 }
-              }
-              transition={{ duration: 0.4 }}
-              className="flex justify-center gap-5 pb-6"
+              key={member.id}
+              className="relative flex flex-col glass backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 border-2 border-purple-500/20 hover:border-purple-400"
+              whileHover={{ y: -10, scale: 1.04 }}
             >
-              {member.linkedin && (
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  className="text-blue-600 hover:text-blue-800 transition-colors"
-                >
-                  <FaLinkedin size={22} />
-                </a>
-              )}
-              {member.github && (
-                <a
-                  href={member.github}
-                  target="_blank"
-                  className="text-gray-800 hover:text-black transition-colors"
-                >
-                  <FaGithub size={22} />
-                </a>
-              )}
-              {member.twitter && (
-                <a
-                  href={member.twitter}
-                  target="_blank"
-                  className="text-sky-500 hover:text-sky-700 transition-colors"
-                >
-                  <FaTwitter size={22} />
-                </a>
-              )}
+              {/* Profile Image */}
+              <div className="h-52 w-full overflow-hidden flex items-center justify-center bg-gradient-to-tr from-purple-500/10 to-green-500/10">
+                <img
+                  src={avatarUrl}
+                  alt={member.name}
+                  className="w-32 h-32 rounded-full object-cover border-4 border-purple-400/50 shadow-lg transition-transform duration-500 hover:scale-110"
+                />
+              </div>
+
+              {/* Info */}
+              <div className="p-7 text-center flex-1">
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  {member.name}
+                </h2>
+                <p className="text-base text-gray-300 font-medium mb-4">
+                  {member.role}
+                </p>
+              </div>
+
+              {/* Social Links */}
+              <div className="glass backdrop-blur-xl px-6 py-4 flex justify-center gap-6 rounded-b-3xl shadow-inner border-t border-purple-500/30">
+                {member.linkedin && (
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    <FaLinkedin size={28} />
+                  </a>
+                )}
+                {member.github && (
+                  <a
+                    href={`https://github.com/${member.github}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    <FaGithub size={28} />
+                  </a>
+                )}
+                {member.twitter && (
+                  <a
+                    href={member.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-purple-400 hover:text-purple-300 transition-colors"
+                  >
+                    <FaTwitter size={28} />
+                  </a>
+                )}
+              </div>
             </motion.div>
-          </motion.div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
