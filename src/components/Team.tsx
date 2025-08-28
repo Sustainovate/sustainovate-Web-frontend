@@ -2,33 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaTwitter } from "react-icons/fa";
-
-interface TeamMember {
-  id: number;
-  name: string;
-  role: string;
-  github?: string;
-  linkedin?: string;
-  twitter?: string;
-}
-
-const team: TeamMember[] = [
-  {
-    id: 1,
-    name: "Jit Mukherjee",
-    role: "Team Lead",
-    github: "codesbyjit",
-    linkedin: "https://linkedin.com/in/jit",
-    twitter: "https://twitter.com/jit",
-  },
-  {
-    id: 2,
-    name: "Mainak Panda",
-    role: "Designer",
-    github: "0xmainak",
-    linkedin: "https://linkedin.com/in/mainak",
-  },
-];
+import {team} from '@/data/Team'
 
 export default function TeamOrgChart() {
   return (
@@ -39,7 +13,7 @@ export default function TeamOrgChart() {
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 w-full max-w-7xl">
         {team.map((member) => {
           const avatarUrl = member.github
-            ? `https://github.com/${member.github}.png`
+            ? `https://github.com/${member.github.split("/")[3]}.png`
             : "https://via.placeholder.com/150";
 
           return (
@@ -89,9 +63,9 @@ export default function TeamOrgChart() {
                     <FaGithub size={28} />
                   </a>
                 )}
-                {member.twitter && (
+                {member.x && (
                   <a
-                    href={member.twitter}
+                    href={member.x}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-purple-400 hover:text-purple-300 transition-colors"

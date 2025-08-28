@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui";
 import { Calendar, Clock3, Tag as TagIcon, Users } from "lucide-react";
-import { useEvent } from "@/hooks/useEvent"; // custom hook
+import { useEvent } from "@/hooks/useEvent";
 
 export type EventCardProps = {
   id: string;
@@ -14,8 +14,8 @@ export type EventCardProps = {
   category?: string;
   priceGBP?: number;
   thumbnailUrl?: string;
-  registrationUsers: string[]; // 👈 replaces interestedCount
-  currentUserId: string; // 👈 know if this user has joined
+  registrationUsers: string[];
+  currentUserId: string;
 };
 
 export function EventCard({
@@ -40,10 +40,19 @@ export function EventCard({
   const now = new Date();
 
   let durationLabel = "";
+  let buttonLabel = "";
+  let buttonDisabled = false;
+  let buttonClass = "";
+
   if (now > end) {
-    durationLabel = "OVER";
+    durationLabel = "Over";
+    buttonLabel = "Over";
+    buttonDisabled = true;
+    buttonClass = "bg-gray-600 cursor-not-allowed text-white";
   } else if (now >= start && now <= end) {
     durationLabel = "Present";
+    buttonLabel = isJoined ? "Unjoin" : "Join Now";
+    buttonClass = isJoined ? "bg-red-500 hover:bg-red-600 text-white" : "bg-indigo-500 hover:bg-indigo-600 text-white";
   } else {
     const diffMs = start.getTime() - now.getTime();
     const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
@@ -56,6 +65,9 @@ export function EventCard({
       const diffHours = Math.ceil(diffMs / (1000 * 60 * 60));
       durationLabel = `${diffHours} hour${diffHours > 1 ? "s" : ""} left`;
     }
+
+    buttonLabel = "Interested";
+    buttonClass = "bg-yellow-500 hover:bg-yellow-600 text-white";
   }
 
   return (
@@ -68,7 +80,7 @@ export function EventCard({
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/40 via-fuchsia-600/20 to-emerald-600/30" />
         )}
         {category && (
-          <div className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-[10px] sm:text-xs">
+          <div className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-[10px] sm:text-xs">
             <TagIcon className="w-3.5 h-3.5" />
             <span>{category}</span>
           </div>
@@ -98,18 +110,17 @@ export function EventCard({
         </div>
 
         {/* Footer */}
-        <div className="mt-4 flex justify-end items-center gap-3">
+        <div className="mt-4 flex justify-between items-center gap-3">
           <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-300">
             <Users className="w-4 h-4" />
-            <span>{count.toLocaleString()} joined</span>
+            <span>{count.toLocaleString()}</span>
           </div>
           <Button
             onClick={toggleJoin}
-            className={`w-32 sm:w-36 ${
-              isJoined ? "bg-red-500 hover:bg-red-600" : "bg-indigo-500 hover:bg-indigo-600"
-            } text-white`}
+            disabled={buttonDisabled}
+            className={`w-32 sm:w-36 cursor-pointer ${buttonClass}`}
           >
-            {isJoined ? "Unjoin" : "Join now"}
+            {buttonLabel}
           </Button>
         </div>
       </div>

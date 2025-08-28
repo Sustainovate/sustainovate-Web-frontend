@@ -8,7 +8,7 @@ export default function Logo() {
         S
       </div>
       {/* Brand name */}
-      <span className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
+      <span className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent hidden sm:inline">
         Sustainovate
       </span>
     </div>

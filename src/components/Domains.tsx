@@ -12,26 +12,26 @@ type Domain = {
 
 const domains: Domain[] = [
   {
-    title: "Carbon Emission and Energy Efficiency",
-    description:
-      "Develop solutions for reducing carbon footprint and improving energy efficiency across industries.",
-    tags: ["Smart Grids", "Solar Solutions", "Energy Analytics"],
-    color: "green",
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M13 10V3L4 14h7v7l9-11h-7z"
-      />
-    ),
-  },
+  title: "Green Tech and Digital Sustainability",
+  description: "Innovate solutions that reduce environmental impact and promote sustainable practices through technology and community engagement.",
+  tags: ["Innovation", "Community", "Tech"],
+  color: "green",
+  icon: (
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+         10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8
+         8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"
+    />
+  ),
+},
   {
-    title: "Sustainable Agriculture",
-    description:
-      "Leverage technology to promote eco-friendly farming and resilient food systems.",
-    tags: ["Precision Farming", "AgriTech", "Soil Health"],
-    color: "yellow",
+    title: "Media, Design, Social and Outreach",
+    description: "Create campaigns, designs, and outreach programs to raise awareness and engage communities.",
+    tags: ["Social Media", "Design", "Community Outreach"],
+    color: "orange",
     icon: (
       <path
         strokeLinecap="round"
@@ -43,8 +43,7 @@ const domains: Domain[] = [
   },
   {
     title: "Waste Management",
-    description:
-      "Innovate in recycling, circular economy, and smart waste tracking solutions.",
+    description: "Innovate in recycling, circular economy, and smart waste tracking solutions.",
     tags: ["Circular Economy", "Smart Bins", "Recycling Tech"],
     color: "teal",
     icon: (
@@ -57,17 +56,72 @@ const domains: Domain[] = [
     ),
   },
   {
-    title: "Water Conservation",
-    description:
-      "Smart solutions to monitor, conserve, and optimize water usage globally.",
-    tags: ["IoT Monitoring", "Water Recycling", "Smart Irrigation"],
-    color: "blue",
+    title: "Ecology and Resource Management",
+    description: "Promote sustainable use of natural resources and ecosystem conservation.",
+    tags: ["Ecosystem Management", "Resource Optimization", "Conservation Tech"],
+    color: "lightgreen",
     icon: (
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        d="M12 22s8-4.5 8-10a8 8 0 10-16 0c0 5.5 8 10 8 10z"
+        d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"
+      />
+    ),
+  },
+  {
+    title: "Research and Innovation",
+    description: "Drive scientific research and technological innovation for sustainability.",
+    tags: ["Tech Innovation", "Research", "Sustainable Solutions"],
+    color: "indigo",
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M12 6v6l4 2"
+      />
+    ),
+  },
+  {
+    title: "Carbon and Energy Efficiency",
+    description: "Develop solutions for reducing carbon footprint and improving energy efficiency across industries.",
+    tags: ["Smart Grids", "Solar Solutions", "Energy Analytics"],
+    color: "green",
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M13 10V3L4 14h7v7l9-11h-7z"
+      />
+    ),
+  },
+  {
+    title: "Nature and Biodiversity",
+    description: "Protect biodiversity and natural habitats while promoting sustainable coexistence.",
+    tags: ["Wildlife Conservation", "Biodiversity", "Habitat Restoration"],
+    color: "lime",
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M12 2a10 10 0 100 20 10 10 0 000-20z"
+      />
+    ),
+  },
+  {
+    title: "Mental Health and Emotional Well-being",
+    description: "Promote mental health, emotional resilience, and well-being programs for communities.",
+    tags: ["Mindfulness", "Counseling", "Emotional Support"],
+    color: "green",
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M12 12c2-2 4-4 4-6a4 4 0 10-8 0c0 2 2 4 4 6z"
       />
     ),
   },
@@ -96,8 +150,9 @@ const ExploreDomains: FC = () => {
           {domains.map((domain, idx) => (
             <div
               key={idx}
-              className={`domain-card glass backdrop-blur-xl rounded-2xl p-6 sm:p-8 shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 transform hover:scale-105 border border-purple-500/20`}
+              className={`domain-card flex flex-col justify-between glass backdrop-blur-xl rounded-2xl p-6 sm:p-8 shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 transform hover:scale-105 border border-purple-500/20`}
             >
+              <div>
               <div className="mb-4">
                 <div
                   className={`w-10 h-10 sm:w-12 sm:h-12 ${getGradientColor(domain.color)} rounded-xl flex items-center justify-center shadow-lg`}
@@ -120,6 +175,7 @@ const ExploreDomains: FC = () => {
               <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-4">
                 {domain.description}
               </p>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {domain.tags.map((tag, tagIdx) => (
                   <span
