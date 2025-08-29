@@ -1,0 +1,15 @@
+version: '3.8' # Use a valid and supported version
+
+services:
+  sustainovate-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile # Explicitly specify the Dockerfile
+    container_name: sustainovate-frontend-container
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./logs:/app/logs # Ensure the 'logs' directory exists on the host
+    env_file:
+      - .env

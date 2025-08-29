@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
-import webpack from "webpack";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "media.insider.in" },
@@ -14,25 +14,6 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "example.com" },
       { protocol: "https", hostname: "www.smartmeetings.com" },
     ],
-  },
-  webpack: (config, { dev }) => {
-    if (!dev) {
-      config.plugins.push(
-        new webpack.ProgressPlugin((percentage, message) => {
-          const percent = Math.round(percentage * 100);
-          const barLength = 30;
-          const filledBarLength = Math.round((percent / 100) * barLength);
-          const bar =
-            "█".repeat(filledBarLength) +
-            "-".repeat(barLength - filledBarLength);
-
-          process.stdout.clearLine(0);
-          process.stdout.cursorTo(0);
-          process.stdout.write(`Building [${bar}] ${percent}% - ${message}`);
-        })
-      );
-    }
-    return config;
   },
 };
 
