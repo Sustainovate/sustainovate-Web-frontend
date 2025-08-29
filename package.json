@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "build-profile": "next build --profile",
-    "start-next": "next start",
-    "start": "node .next/standalone/server.js",
+    "start": "next start",
+    "start-next": "node .next/standalone/server.js",
     "lint": "next lint"
   },
   "dependencies": {
