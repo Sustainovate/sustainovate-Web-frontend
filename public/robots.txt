@@ -1,0 +1,41 @@
+# Sustainovate Web Frontend - Robots.txt
+# Student-led club for sustainable innovation and technology
+
+User-agent: *
+Allow: /
+
+# Block crawlers from administrative and authentication pages
+Disallow: /admin/
+Disallow: /moderator/
+Disallow: /login/
+Disallow: /signup/
+
+# Block crawlers from private API routes (if any exist)
+Disallow: /api/
+
+# Block crawlers from build and development files
+Disallow: /_next/
+Disallow: /static/
+
+# Block crawlers from config and system files
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.txt$
+
+# Allow access to public pages
+Allow: /
+Allow: /events/
+Allow: /leaderboard/
+Allow: /about/
+
+# Allow access to static assets
+Allow: /favicon.ico
+Allow: /robots.txt
+Allow: /android-chrome-512x512.png
+Allow: /apple-touch-icon.png
+
+# Sitemap location (when available)
+# Sitemap: https://sustainovate.mainak.me/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
