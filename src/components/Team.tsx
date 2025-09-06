@@ -55,7 +55,7 @@ export default function TeamOrgChart() {
                 )}
                 {member.github && (
                   <a
-                    href={`https://github.com/${member.github}`}
+                    href={member.github}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-300 hover:text-white transition-colors"
