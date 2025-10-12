@@ -19,12 +19,12 @@ export type Player = {
 
 function getBadge(rank: number) {
   if (rank === 1)
-    return { label: "Gold", className: "from-yellow-400/50 to-yellow-300/20 border-yellow-400/50" };
+    return { label: "Gold", className: "from-yellow-300/40 to-yellow-200/20 border-yellow-300/50" };
   if (rank === 2)
-    return { label: "Silver", className: "from-slate-300/50 to-slate-200/20 border-slate-200/50" };
+    return { label: "Silver", className: "from-gray-300/40 to-gray-200/20 border-gray-300/50" };
   if (rank === 3)
-    return { label: "Bronze", className: "from-amber-700/50 to-amber-600/20 border-amber-600/50" };
-  return { label: "", className: "from-white/5 to-white/0 border-white/10" };
+    return { label: "Bronze", className: "from-amber-400/40 to-amber-300/20 border-amber-400/50" };
+  return { label: "", className: "from-white/50 to-white/0 border-gray-200/50" };
 }
 
 export default function LeaderboardPage() {
@@ -89,45 +89,43 @@ export default function LeaderboardPage() {
   }, [query, minPoints, players]);
 
   const maxPoints = filteredPlayers[0]?.points ?? 1;
-
-  // Find user rank
   const currentUserRank = currentUser
     ? filteredPlayers.findIndex((p) => p.id === currentUser.id) + 1
     : null;
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0A0A12] via-[#1A1A2E] to-[#16213E] text-gray-100 p-4 sm:p-6">
+    <main className="antialiased min-h-screen flex flex-col bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 text-black p-4 sm:p-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
 
         {/* Sidebar */}
         <aside className="space-y-6">
-          <div className="glass rounded-2xl p-6 border border-purple-500/20 shadow-2xl">
+          <div className="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-emerald-200 shadow-xl">
             {/* Search */}
             <div>
-              <h3 className="text-lg font-semibold text-white">Search</h3>
+              <h3 className="text-lg font-semibold text-emerald-800">Search</h3>
               <div className="relative mt-2">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-600" />
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Name or username"
-                  className="pl-9 bg-neutral-800 text-gray-100 placeholder:text-gray-400"
+                  className="pl-9 bg-white/80 text-emerald-900 placeholder:text-emerald-400 border border-emerald-200 focus:ring-emerald-400 focus:border-emerald-400"
                 />
               </div>
             </div>
 
             {/* Filters */}
             <div>
-              <h3 className="text-lg font-semibold text-white mt-4">Filters</h3>
+              <h3 className="text-lg font-semibold text-emerald-800 mt-4">Filters</h3>
               <div className="flex flex-col gap-2 mt-2">
                 <Button
                   variant="secondary"
                   onClick={() => setMinPoints((v) => (v === 0 ? 3000 : 0))}
                   className={cn(
-                    "flex items-center gap-2 justify-start",
+                    "flex items-center gap-2 justify-start transition-all duration-200 rounded-xl",
                     minPoints === 0
-                      ? "bg-red-600 text-white"
-                      : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
+                      ? "bg-gradient-to-r from-emerald-500 to-teal-400 text-white shadow-md"
+                      : "bg-white/80 border border-emerald-300 text-emerald-800 hover:bg-emerald-100"
                   )}
                 >
                   <Filter className="h-4 w-4" />
@@ -145,15 +143,15 @@ export default function LeaderboardPage() {
               return (
                 <div
                   key={`${p.id}-${i}`}
-                  className="glass rounded-2xl border border-purple-500/20 shadow-2xl p-4 flex flex-col items-center text-center hover:scale-105 transition-transform duration-200"
+                  className="bg-white/70 backdrop-blur-md rounded-2xl border border-emerald-200 shadow-xl p-4 flex flex-col items-center text-center hover:scale-[1.03] transition-transform duration-200"
                 >
-                  <Avatar className="h-20 w-20 bg-black/30 ring-1 ring-purple-500/30 mb-3">
+                  <Avatar className="h-20 w-20 bg-white ring-1 ring-emerald-300 mb-3">
                     <AvatarImage src={p.avatarUrl} alt={p.name} />
                     <AvatarFallback>{p.name[0]}</AvatarFallback>
                   </Avatar>
-                  <h3 className="text-lg font-semibold text-white truncate">{p.name}</h3>
-                  <span className="text-sm text-gray-400">@{p.username}</span>
-                  <div className="mt-2 text-yellow-400 flex items-center gap-1">
+                  <h3 className="text-lg font-semibold text-emerald-900 truncate">{p.name}</h3>
+                  <span className="text-sm text-emerald-600">@{p.username}</span>
+                  <div className="mt-2 text-emerald-700 flex items-center gap-1 font-medium">
                     <Trophy className="w-4 h-4" />
                     <span>{p.points.toLocaleString()} pts</span>
                   </div>
@@ -171,19 +169,19 @@ export default function LeaderboardPage() {
 
           {/* Current User Card */}
           {currentUser && (
-            <div className="glass rounded-2xl border border-purple-500/20 shadow-2xl p-4 flex flex-col items-center text-center mt-6">
-              <Avatar className="h-16 w-16 bg-black/30 ring-1 ring-purple-500/30 mb-3">
+            <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-emerald-200 shadow-xl p-4 flex flex-col items-center text-center mt-6">
+              <Avatar className="h-16 w-16 bg-white ring-1 ring-emerald-300 mb-3">
                 <AvatarImage src={currentUser.avatarUrl} alt={currentUser.username} />
                 <AvatarFallback>{currentUser.username}</AvatarFallback>
               </Avatar>
-              <h3 className="text-lg font-semibold text-white truncate">{currentUser.username}</h3>
-              <span className="text-sm text-gray-400">@{currentUser.username}</span>
-              <div className="mt-2 text-yellow-400 flex items-center gap-1">
+              <h3 className="text-lg font-semibold text-emerald-900 truncate">{currentUser.username}</h3>
+              <span className="text-sm text-emerald-600">@{currentUser.username}</span>
+              <div className="mt-2 text-emerald-700 flex items-center gap-1 font-medium">
                 <Trophy className="w-4 h-4" />
                 <span>{currentUser.points.toLocaleString()} pts</span>
               </div>
               {currentUserRank && (
-                <span className="mt-2 px-3 py-1 rounded-full text-xs font-medium border from-white/5 to-white/0 border-white/10">
+                <span className="mt-2 px-3 py-1 rounded-full text-xs font-medium border border-emerald-300 bg-white/60 text-emerald-700">
                   Rank #{currentUserRank}
                 </span>
               )}
@@ -200,41 +198,43 @@ export default function LeaderboardPage() {
               return (
                 <li
                   key={`${p.id}-${i}`}
-                  className="glass rounded-2xl border border-purple-500/20 shadow-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 hover:shadow-xl hover:scale-[1.01] transition-all duration-200"
+                  className="bg-white/70 backdrop-blur-md rounded-2xl border border-emerald-200 shadow-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 hover:shadow-emerald-200/70 hover:scale-[1.01] transition-all duration-200"
                 >
                   <div
                     className={cn(
                       "h-10 w-10 rounded-full grid place-items-center font-semibold text-sm",
                       rank === 1 &&
-                      "bg-gradient-to-br from-blue-500/50 to-purple-500/30 text-blue-200",
+                      "bg-gradient-to-br from-yellow-300 to-emerald-200 text-emerald-900",
                       rank === 2 &&
-                      "bg-gradient-to-br from-purple-500/50 to-pink-500/30 text-purple-200",
+                      "bg-gradient-to-br from-gray-300 to-emerald-100 text-emerald-800",
                       rank === 3 &&
-                      "bg-gradient-to-br from-orange-500/50 to-yellow-500/30 text-orange-200",
-                      rank > 3 && "bg-white/10 text-gray-300"
+                      "bg-gradient-to-br from-amber-300 to-yellow-100 text-emerald-900",
+                      rank > 3 && "bg-emerald-100 text-emerald-800"
                     )}
                   >
                     {rank}
                   </div>
-                  <Avatar className="h-10 w-10 bg-neutral-800 ring-1 ring-white/10">
+                  <Avatar className="h-10 w-10 bg-white ring-1 ring-emerald-200">
                     <AvatarImage src={p.avatarUrl} alt={p.name} />
                     <AvatarFallback>{p.name[0]}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="truncate font-medium">{p.name}</span>
-                      <span className="text-xs text-gray-400 truncate">@{p.username}</span>
+                      <span className="truncate font-medium text-emerald-900">{p.name}</span>
+                      <span className="text-xs text-emerald-600 truncate">@{p.username}</span>
                     </div>
-                    <div className="mt-2 h-2 w-full rounded-full bg-white/5 overflow-hidden">
+                    <div className="mt-2 h-2 w-full rounded-full bg-emerald-100 overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-orange-400 transition-all"
+                        className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-green-400 transition-all"
                         style={{ width: `${progress * 100}%` }}
                       />
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-semibold">{p.points.toLocaleString()} pts</div>
-                    <div className="text-[10px] text-gray-400">
+                    <div className="text-sm font-semibold text-emerald-900">
+                      {p.points.toLocaleString()} pts
+                    </div>
+                    <div className="text-[10px] text-emerald-600">
                       Next rank in {Math.max(0, maxPoints + 500 - p.points).toLocaleString()} pts
                     </div>
                   </div>

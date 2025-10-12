@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "./ui/Logo";
 import ProfileSidebar from "./ProfileBar";
+import { Menu, X } from "lucide-react";
 
 interface User {
   avatar?: string;
   _id: string;
-  username:string;
+  username: string;
   email: string;
   role: "user" | "moderator" | "admin";
 }
@@ -41,15 +42,14 @@ export default function Navbar() {
     checkAuth();
   }, [router]);
 
-  // --- ROBUST: Handles clicks outside both desktop and mobile menus ---
+  // --- Handle outside clicks ---
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const targetNode = event.target as Node;
-      
-      const isOutsideDesktop = !desktopProfileRef.current?.contains(targetNode);
-      const isOutsideMobile = !mobileMenuRef.current?.contains(targetNode);
-
-      if (isOutsideDesktop && isOutsideMobile) {
+      if (
+        !desktopProfileRef.current?.contains(targetNode) &&
+        !mobileMenuRef.current?.contains(targetNode)
+      ) {
         setMenuOpen(false);
         setProfileOpen(false);
       }
@@ -73,50 +73,76 @@ export default function Navbar() {
     setProfileOpen(false);
   };
 
-  const avatarSrc = user?.avatar ? user.avatar : `https://i.pravatar.cc/150?u=${user?._id}`;
+  const avatarSrc = user?.avatar || `https://i.pravatar.cc/150?u=${user?._id}`;
 
-  // Helper links array
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/events", label: "Events" },
     { href: "/leaderboard", label: "Leaderboard" },
   ];
 
-  if (user?.role === "admin" || user?.role === "moderator") {
+  if (user?.role === "admin" || user?.role === "moderator")
     navLinks.push({ href: "/admin", label: "Admin" });
-  }
-  if (user?.role === "moderator") {
+  if (user?.role === "moderator")
     navLinks.push({ href: "/moderator", label: "Moderator" });
-  }
 
   return (
-    <nav className="glass backdrop-blur-xl border-b border-purple-500/20 text-white p-4 shadow-2xl relative z-[9999]">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" onClick={handleCloseMenu} className="flex items-center gap-2">
+    <nav
+      className="sticky top-0 z-50 backdrop-blur-md bg-white/60 border-b border-emerald-100 shadow-sm transition-all duration-300 antialiased"
+      role="navigation"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex justify-between items-center h-16">
+        {/* --- Logo --- */}
+        <Link
+          href="/"
+          onClick={handleCloseMenu}
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
           <Logo />
         </Link>
 
-        {/* Desktop menu */}
-        <ul className="hidden md:flex space-x-2 items-center">
-          {navLinks.slice(0, 3).map(link => ( // Show only main links
-             <li key={link.href}><Link className="px-4 py-2 rounded-lg hover:bg-purple-500/20 transition-all duration-300 font-medium glow-hover" href={link.href}>{link.label}</Link></li>
+        {/* --- Desktop Menu --- */}
+        <ul className="hidden md:flex items-center space-x-4 font-medium">
+          {navLinks.map(link => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className="px-4 py-2 rounded-xl hover:bg-emerald-100 transition-all duration-200 text-emerald-800"
+              >
+                {link.label}
+              </Link>
+            </li>
           ))}
 
           {!loading && !user && (
             <li>
-              <Link className="px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-500 rounded-lg hover:from-purple-500 hover:to-purple-400 transition-all duration-300 font-medium shadow-lg glow-hover" href="/login">Login</Link>
+              <Link
+                href="/login"
+                className="px-5 py-2 rounded-full border border-emerald-500 text-emerald-700 hover:bg-emerald-500 hover:text-white font-semibold transition-all duration-300 shadow-sm"
+              >
+                Login
+              </Link>
             </li>
           )}
 
           {!loading && user && (
             <li className="relative" ref={desktopProfileRef}>
-              <button onClick={toggleProfile} className="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-purple-500/20 transition-all duration-300 text-sm font-medium shadow-lg glow-hover">
-                <img src={avatarSrc} alt="avatar" className="h-8 w-8 rounded-full border-2 border-purple-400 shadow-md"/>
-                <span className="truncate max-w-[80px] text-white">{user.username.split(" ")[0]}</span>
+              <button
+                onClick={toggleProfile}
+                className="flex items-center gap-2 px-3 py-2 rounded-full border border-emerald-400 hover:bg-emerald-100 transition-all duration-300 focus:outline-none"
+              >
+                <img
+                  src={avatarSrc}
+                  alt="avatar"
+                  className="h-8 w-8 rounded-full border border-emerald-400 shadow-sm object-cover"
+                  loading="lazy"
+                />
+                <span className="font-medium text-emerald-800">
+                  {user.username.split(" ")[0]}
+                </span>
               </button>
               {profileOpen && (
-                <div className="absolute right-0 mt-2 w-64 z-[99999] glass rounded-xl shadow-2xl overflow-hidden border border-purple-500/30">
-                  {/* FIXED: Pass the user prop */}
+                <div className="absolute right-0 mt-3 w-64 bg-white/90 rounded-xl shadow-lg border border-emerald-100 backdrop-blur-md overflow-hidden">
                   <ProfileSidebar user={user} />
                 </div>
               )}
@@ -124,27 +150,64 @@ export default function Navbar() {
           )}
         </ul>
 
-        {/* Mobile menu Toggles */}
-        <div className="md:hidden flex items-center gap-2">
-          {/* ...your mobile buttons... */}
+        {/* --- Mobile Menu Toggle --- */}
+        <div className="md:hidden flex items-center gap-3">
+          {!loading && user && (
+            <button onClick={toggleProfile} aria-label="Profile">
+              <img
+                src={avatarSrc}
+                alt="avatar"
+                className="h-8 w-8 rounded-full border border-emerald-400 object-cover"
+                loading="lazy"
+              />
+            </button>
+          )}
+          <button
+            onClick={toggleMenu}
+            className="p-2 rounded-lg hover:bg-emerald-100 transition-all duration-200"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? (
+              <X className="text-emerald-800 w-6 h-6" />
+            ) : (
+              <Menu className="text-emerald-800 w-6 h-6" />
+            )}
+          </button>
         </div>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* --- Mobile Dropdown --- */}
       {(menuOpen || profileOpen) && (
-        <div ref={mobileMenuRef} className="md:hidden mt-2 space-y-2 bg-purple-900/20 glass backdrop-blur-xl rounded-lg p-4 border border-purple-500/30">
-          {menuOpen && (
-            <>
-              {navLinks.map(link => (
-                <Link key={link.href} onClick={handleCloseMenu} className="block px-4 py-2 rounded-lg hover:bg-purple-500/20" href={link.href}>{link.label}</Link>
-              ))}
-            </>
-          )}
+        <div
+          ref={mobileMenuRef}
+          className="md:hidden animate-in slide-in-from-top-2 fade-in bg-white/80 backdrop-blur-md border-t border-emerald-100 shadow-md rounded-b-2xl p-4 space-y-2"
+        >
+          {menuOpen &&
+            navLinks.map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={handleCloseMenu}
+                className="block px-4 py-2 rounded-lg text-emerald-800 hover:bg-emerald-100 font-medium transition-all duration-200"
+              >
+                {link.label}
+              </Link>
+            ))}
+
           {profileOpen && user && (
-            <div className="mt-2 w-full">
-              {/* FIXED: Pass both user and onLinkClick props */}
+            <div className="mt-3">
               <ProfileSidebar user={user} onLinkClick={handleCloseMenu} />
             </div>
+          )}
+
+          {!loading && !user && (
+            <Link
+              href="/login"
+              onClick={handleCloseMenu}
+              className="block text-center px-5 py-2 mt-2 rounded-full border border-emerald-500 text-emerald-700 hover:bg-emerald-500 hover:text-white font-semibold transition-all duration-300"
+            >
+              Login
+            </Link>
           )}
         </div>
       )}

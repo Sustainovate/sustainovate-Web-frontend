@@ -26,4 +26,20 @@ export const team: TeamMember[] = [
     github: "https://github.com/0xmainak",
     linkedin: "https://linkedin.com/in/mainak",
   },
+  {
+    id: 3,
+    name: "Archisman",
+    domain: "Green Tech",
+    role: "UI/UX",
+    github: "https://github.com/Archisman936",
+    linkedin: "https://linkedin.com/in/archisman",
+  },
+  {
+    id: 4,
+    name: "Himanshu",
+    domain: "Green Tech",
+    role: "Alien",
+    github: "https://github.com/himonshuuu",
+    linkedin: "https://linkedin.com/in/mainak",
+  },
 ];

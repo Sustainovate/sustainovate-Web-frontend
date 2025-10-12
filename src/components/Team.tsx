@@ -1,82 +1,110 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { FaLinkedin, FaGithub, FaTwitter } from "react-icons/fa";
-import {team} from '@/data/Team'
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { team } from "@/data/Team";
 
 export default function TeamOrgChart() {
+  const controls = useAnimation();
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Infinite auto-scroll loop
+  useEffect(() => {
+    let running = true;
+
+    const scroll = async () => {
+      while (running) {
+        if (!isPaused) {
+          await controls.start({
+            x: "-50%",
+            transition: { duration: 40, ease: "linear" },
+          });
+          await controls.start({ x: 0, transition: { duration: 0 } });
+        } else {
+          await new Promise((r) => setTimeout(r, 200));
+        }
+      }
+    };
+
+    scroll();
+    return () => {
+      running = false;
+    };
+  }, [controls, isPaused]);
+
+  // Duplicate the team for seamless infinite scroll
+  const doubledTeam = [...team, ...team];
+
   return (
-    <div className="min-h-screen bg-transparent flex flex-col items-center py-16 px-4">
-      <h1 className="text-5xl font-extrabold text-white mb-14 tracking-tight drop-shadow-lg">
+    <div className="relative overflow-hidden bg-transparent py-20 px-6 flex flex-col items-center select-none">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-700 to-emerald-600 bg-clip-text text-transparent">
         Meet Our Team
       </h1>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 w-full max-w-7xl">
-        {team.map((member) => {
-          const avatarUrl = member.github
-            ? `https://github.com/${member.github.split("/")[3]}.png`
-            : "https://via.placeholder.com/150";
 
-          return (
-            <motion.div
-              key={member.id}
-              className="relative flex flex-col glass backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 border-2 border-purple-500/20 hover:border-purple-400"
-              whileHover={{ y: -10, scale: 1.04 }}
-            >
-              {/* Profile Image */}
-              <div className="h-52 w-full overflow-hidden flex items-center justify-center bg-gradient-to-tr from-purple-500/10 to-green-500/10">
+      <div className="relative w-full max-w-7xl overflow-hidden">
+        <motion.div
+          animate={controls}
+          className="flex gap-8"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          {doubledTeam.map((member, index) => {
+            const avatarUrl = member.github
+              ? `https://github.com/${member.github.split("/")[3]}.png`
+              : "https://via.placeholder.com/150";
+
+            return (
+              <motion.div
+                key={index}
+                className="relative w-64 h-80 flex-shrink-0 bg-white/5 rounded-2xl border border-white/10 shadow-lg backdrop-blur-md overflow-hidden transition-transform duration-300"
+                whileHover={{ scale: 1.03 }}
+                onClick={() => setIsPaused(true)}
+              >
+                {/* Image */}
                 <img
                   src={avatarUrl}
                   alt={member.name}
-                  className="w-32 h-32 rounded-full object-cover border-4 border-purple-400/50 shadow-lg transition-transform duration-500 hover:scale-110"
+                  className="w-full h-full object-cover opacity-90 transition-opacity duration-300 rounded-2xl"
                 />
-              </div>
 
-              {/* Info */}
-              <div className="p-7 text-center flex-1">
-                <h2 className="text-2xl font-bold text-white mb-2">
-                  {member.name}
-                </h2>
-                <p className="text-base text-gray-300 font-medium mb-4">
-                  {member.role}
-                </p>
-              </div>
+                {/* Hover Overlay */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="absolute inset-0 bg-black/70 flex flex-col justify-center items-center text-center p-5"
+                >
+                  <h2 className="text-xl font-semibold text-white mb-1">
+                    {member.name}
+                  </h2>
+                  <p className="text-gray-300 text-sm mb-3">{member.role}</p>
 
-              {/* Social Links */}
-              <div className="glass backdrop-blur-xl px-6 py-4 flex justify-center gap-6 rounded-b-3xl shadow-inner border-t border-purple-500/30">
-                {member.linkedin && (
-                  <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <FaLinkedin size={28} />
-                  </a>
-                )}
-                {member.github && (
-                  <a
-                    href={member.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    <FaGithub size={28} />
-                  </a>
-                )}
-                {member.x && (
-                  <a
-                    href={member.x}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-purple-400 hover:text-purple-300 transition-colors"
-                  >
-                    <FaTwitter size={28} />
-                  </a>
-                )}
-              </div>
-            </motion.div>
-          );
-        })}
+                  <div className="flex gap-4 text-sm font-medium">
+                    {member.linkedin && (
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 hover:text-blue-300"
+                      >
+                        LinkedIn
+                      </a>
+                    )}
+                    {member.github && (
+                      <a
+                        href={member.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-300 hover:text-white"
+                      >
+                        GitHub
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </div>
     </div>
   );
