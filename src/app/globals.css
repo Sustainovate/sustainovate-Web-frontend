@@ -19,9 +19,9 @@
 }
 
 body {
-  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
-  background-attachment: fixed;
-  color: var(--foreground);
+  /* background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%); */
+  /* background-attachment: fixed;
+  color: var(--background); */
   font-family: var(--font-geist-sans), 'Inter', system-ui, sans-serif;
   line-height: 1.6;
   min-height: 100vh;
@@ -47,17 +47,17 @@ body {
 
 /* Smooth transitions for all elements */
 * {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 /* Glass morphism effect class */
-.glass {
+/* .glass {
   background: rgba(26, 26, 46, 0.3);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(139, 92, 246, 0.2);
-}
+} */
 
 /* Hover glow effect */
-.glow-hover:hover {
+/* .glow-hover:hover {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-}
+} */

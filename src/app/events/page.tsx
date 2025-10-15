@@ -117,31 +117,31 @@ export default function EventsPage() {
   }, [events, selectedTag, selectedCategory, statusFilter, selectedDate, today]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0A0A12] via-[#1A1A2E] to-[#16213E] text-gray-100 p-4 sm:p-6 md:p-8">
+    <main className="antialiased min-h-screen flex flex-col bg-gradient-to-br text-black p-4 sm:p-6 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="space-y-2">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-green-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
             Events
           </h1>
-          <p className="text-gray-300 text-lg md:text-xl">
+          <p className="text-gray-700 text-lg md:text-xl">
             Discover and participate in our sustainability events
           </p>
         </header>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Sidebar Filters */}
-          <aside className="lg:w-[300px] glass rounded-2xl p-4 sm:p-6 lg:p-6 border border-purple-500/20 shadow-2xl flex-shrink-0 space-y-6">
+          <aside className="lg:w-[300px] bg-white/70 backdrop-blur-md rounded-2xl p-4 sm:p-6 lg:p-6 border border-emerald-200 shadow-xl flex-shrink-0 space-y-6">
             {/* Status Filter */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-2">Status</h3>
+              <h3 className="text-lg font-semibold text-emerald-800 mb-2">Status</h3>
               <div className="flex flex-wrap gap-2">
                 {["all", "upcoming", "present", "past"].map(status => (
                   <button
                     key={status}
                     onClick={() => setStatusFilter(status as any)}
                     className={`py-2 px-3 sm:px-4 rounded-xl text-sm sm:text-base font-medium transition-all duration-300 ${statusFilter === status
-                      ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg"
-                      : "bg-black/30 text-gray-300 hover:bg-purple-500/20 hover:text-white"
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-400 text-white shadow-md"
+                        : "bg-white/60 border border-emerald-300 text-emerald-800 hover:bg-emerald-100"
                       }`}
                   >
                     {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -152,17 +152,21 @@ export default function EventsPage() {
 
             {/* Tags */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-2">Tags</h3>
+              <h3 className="text-lg font-semibold text-emerald-800 mb-2">Tags</h3>
               <div className="flex flex-wrap gap-2">
                 {uniqueTags.map(tag => (
                   <button
                     key={tag}
                     onClick={() =>
-                      setSelectedTag(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])
+                      setSelectedTag(prev =>
+                        prev.includes(tag)
+                          ? prev.filter(t => t !== tag)
+                          : [...prev, tag]
+                      )
                     }
                     className={`px-3 sm:px-4 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-300 ${selectedTag.includes(tag)
-                      ? "bg-gradient-to-r from-green-500 to-green-400 text-white shadow-lg"
-                      : "bg-black/30 text-gray-300 hover:bg-green-500/20 hover:text-white border border-green-500/30"
+                        ? "bg-gradient-to-r from-teal-500 to-green-400 text-white shadow-md"
+                        : "bg-white/60 border border-teal-300 text-teal-700 hover:bg-teal-100"
                       }`}
                   >
                     {tag}
@@ -173,17 +177,21 @@ export default function EventsPage() {
 
             {/* Categories */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-2">Categories</h3>
+              <h3 className="text-lg font-semibold text-emerald-800 mb-2">Categories</h3>
               <div className="flex flex-col gap-2">
                 {uniqueCategories.map(cat => (
                   <button
                     key={cat}
                     onClick={() =>
-                      setSelectedCategory(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat])
+                      setSelectedCategory(prev =>
+                        prev.includes(cat)
+                          ? prev.filter(c => c !== cat)
+                          : [...prev, cat]
+                      )
                     }
                     className={`py-2 px-3 sm:px-4 rounded-xl text-sm sm:text-base text-left font-medium transition-all duration-300 ${selectedCategory.includes(cat)
-                      ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg"
-                      : "bg-black/30 text-gray-300 hover:bg-purple-500/20 hover:text-white"
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-400 text-white shadow-md"
+                        : "bg-white/60 border border-emerald-300 text-emerald-800 hover:bg-emerald-100"
                       }`}
                   >
                     {cat}
@@ -194,11 +202,12 @@ export default function EventsPage() {
           </aside>
 
           {/* Events List */}
-          <div className="flex-1 glass rounded-2xl border border-purple-500/20 shadow-2xl overflow-hidden p-2 sm:p-4">
+          <div className="flex-1 bg-white/70 backdrop-blur-md rounded-2xl border border-emerald-200 shadow-xl overflow-hidden p-2 sm:p-4">
             <EventsSection loading={loading} filteredEvents={filteredEvents} />
           </div>
         </div>
       </div>
     </main>
+
   );
 }

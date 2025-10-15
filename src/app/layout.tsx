@@ -80,7 +80,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 text-black`}
       >
         <Navbar/>
         {children}
